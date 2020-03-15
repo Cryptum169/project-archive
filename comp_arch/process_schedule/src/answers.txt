@@ -1,0 +1,24 @@
+ECE 3056 Fall 2018
+Lab Assignment 4
+
+Name: Ruoyang Xu
+GT Username: rxu74
+
+Problem 1B
+----------
+
+The execution time is 67.6, 36.0 and 33 for 1, 2 and 4 CPU respectively. There is no linear relationship between the number of CPUs and total execution time, although with more cores the execution time indeed decreased.
+
+There is no linear relationship is because often process hangs on IO requests. Having more CPU would indeed help reduce execution time when there are more ready processes than idle CPU cores. However additional CPU cores cannot do much when there is simply no process ready to be run.
+
+Problem 2B
+----------
+
+Question 1: This is because the remaining time to finish a process is often hard or near impossible to know and schedulers would have to make an estimate instead of actually scheduling them based on their remaining time. 
+
+Question 2: FIFO with 1 CPU has wait time of around 389. LRTF with 1 CPU have time around 292. LRTF have less wait time. LRTF performs better than FIFO is probably due to the repeated IO requests.
+
+Problem 3B
+----------
+
+With shorter timeslices, the number of context switches increases significantly. Unlike in our simulator, in a real OS, going context switches would most certainly cause penalty to the execution. It will increase the number of access to memories, which could lead to increased energy consumption and time delay.
