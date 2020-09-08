@@ -1,0 +1,61 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[letterpaper,margin=0.65in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{mdwlist}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{tgpagella}
+\usepackage{hyperref}
+\usepackage[yyyymmdd,hhmmss]{datetime}
+\pagestyle{empty}
+\usepackage{enumitem}
+\setlength{\tabcolsep}{0em}
+
+% \renewcommand\labelitemii{\textbullet }
+% indentsection style, used for sections that aren't already in lists
+% that need indentation to the level of all text in the document
+\newenvironment{indentsection}[1]%
+{\begin{list}{}%
+	{\setlength{\leftmargin}{#1}}%
+	\item[]%
+}
+{\end{list}}
+
+% format two pieces of text, one left aligned and one right aligned
+\newcommand{\headerrow}[2]
+{\begin{tabular*}{\linewidth}{l@{\extracolsep{\fill}}r}
+	\vspace{-6pt}
+	#1 &
+	#2 \\
+\end{tabular*}}
+
+% make "C++" look pretty when used in text by touching up the plus signs
+\newcommand{\CPP}
+{C\nolinebreak[4]\hspace{-.05em}\raisebox{.22ex}{\footnotesize\bf ++}}
+\newcommand{\ts}{\textsuperscript}
+
+\newcommand{\cvcond}[1]{
+  \ifx\rxucv\undefined
+  {#1}
+  \fi
+}
+
+\newcommand{\rescond}[1]{
+  \ifx\rxucv\undefined
+	\else
+	{#1}
+  \fi
+}
+
+
+
+\begin{document}
+
+\input{newenv.tex}
+\input{edu.tex}
+\input{skills.tex}
+
+% Course might get deprecated soon
+\input{course.tex}
+
+\end{document}
