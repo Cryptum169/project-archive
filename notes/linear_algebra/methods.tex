@@ -1,0 +1,179 @@
+\subsubsection{Whitening Transformation}
+
+\paragraph{Introduction}
+
+Otherwise known as \textbf{Sphering Transformation}, is a linear transformation
+that transforms a vector of random variables with a known covariance
+matrix into a set of new RVs whose covariance is the identity matrix,
+\textbf{meaning uncorrelated\footnote{Not necessarily independent} and each have variance 1}.  
+Transformation is called whitening because it changes the input vector
+to a "white noise vector", zero mean and finite variance, and statistically independent. 
+
+\begin{equation*}
+    Cov(X, Y) = 0 \Rightarrow \text{ Uncorrelated vs Independent } P(X, Y) = P(X)P(Y)
+\end{equation*}
+
+For column vector $X$ with non-singular covariance matrix $\Sigma$ and mean \textbf{0}, then
+
+\begin{equation*}
+    Y = WX, W^TW = \Sigma^{-1}
+\end{equation*} 
+
+gives whitened random vector $Y$ with unit diagonal covariance. There are infinitely many possible
+whitening matrices $W$. Common coices are
+
+\begin{enumerate}[itemsep=0pt]
+    \item $W=\Sigma^{-1/2}$ (Mahalanobis or ZCA whitening)
+    \item Cholesky decomposition of $\Sigma^{-1}$
+    \item Eigen-system of $\Sigma$
+\end{enumerate}
+
+\paragraph{Optimal whitening} transform can be singled out via cross-covariance and cross-correlation of 
+$X$ and $Y$. The unique optimal whitening transformation achieving maximal component-wise
+correlation between original X and whitened Y is produced by the whitening matrix
+\begin{equation*}
+    W=P^{-1/2}V^{-1/2}
+\end{equation*}
+where P is the correlation matrix and V is the variance matrix. 
+\textcolor{blue}{
+    This seems more of a verification, rather than a method to obtain the result,
+    need to check the original citation \cite{optimal_whitening}. 
+}
+
+\paragraph{Related transformation}
+
+\begin{itemize}[itemsep=0pt]
+    \item Decorrelation transform: removes only the correlations but leaves variances intact
+    \item Standardization transform sets variances to 1 but leaves correlations intact
+    \item Coloring transformation transforms a vector of white random variables into a random vector with a specified covariance matrix
+\end{itemize}
+
+\subsubsection{Cholesky decomposition} \label{sec:cho-decomp}
+
+\paragraph{Introduction} Otherwise known as Cholesky factorization,
+is a decomposition of a Hermitian positive-definite matrix to the product
+of a lower triangular and its conjugate transpose, which is useful for
+efficient numerical solutions, e.g. Monte Carlo simulations
+\footnote{When applicable, roughly twice as efficient compared to LU decomposition for
+solving linear systems \cite{numerical_c}}.
+
+\paragraph{Statement} The cholesky decomposition of a Hermitian positive-definite matrix
+\begin{equation*}
+    A = LL^*
+\end{equation*}
+
+$L$ is lower triangular matrix with real and positive diagonal entries, and $L^*$
+denotes the conjugate tranpose of $L$. Every A has a unique Cholesky decomposition. Converse
+holds trivially. Positive semi-definite matrix holds similarly, except the diagonal are
+allowed to be zero. 
+
+\paragraph{Relevant Methods: LDL}
+
+\begin{equation*}
+    A = LDL^* = LD^{1/2}(D^{1/2})^*L^* = \left(LD^{1/2}\right) \left(LD^{1/2}\right)^*
+\end{equation*}
+
+$L$ is a lower triangular matrix, and D is a diagonal matrix. Main advantage being that LDL
+decomposition can be computed and used with essentially the same algorith, but \textbf{avoids extracting
+square roots}. Therefore often called \emph{square-root-free} Cholesky decomposition.
+
+Otherwise called as LDLT decomposition for real matrices. Closely related to the
+eigen decomposition of real symmetric matrices, $\mathbf{A = Q\Lambda Q^T}$,
+see section \ref{sec:eigen-decomp}.
+
+\paragraph{Applications} Mainly used for the numerical solution of linear equations 
+$\mathbf{Ax = b}$. If $\mathbf{A}$ is symmetric and positive definite, then we can solve
+it by computing Cholesky decomposition $\mathbf{A = LL^*}$, then $\mathbf{Ly = b}$ by
+forward substitution, and finally $\mathbf{L^*x = y}$ by back substitution.
+
+Alternative way to eliminate taking square roots in the $\mathbf{LL^*}$ is via LDLT decomposition.
+
+\paragraph{Computation}
+
+The cholesky algorithm is a modified version of Gaussian elimination. It recursively computes matrix $A$
+in the form that
+
+\begin{equation*}
+    A^{(i)} = LA^{(i+1)}L^*
+\end{equation*}
+
+Where $A^{(1)} = A$, and at each step, $A^{(i)}$ gives meaning in the following form
+
+\begin{equation*}
+    A^{(i)} = \begin{bmatrix}
+        I & 0 & 0 \\ 0 & a_{i, i} & \mathbf{b}^* \\ 0 & \mathbf{b} & \mathbf{B}
+    \end{bmatrix}, 
+    L = \begin{bmatrix}
+        I & 0 & 0 \\ 0 & \sqrt{a_{i, i}} & 0 \\ 0 & \frac{1}{\sqrt{a_{i, i}}}\mathbf{b} & I
+    \end{bmatrix}
+\end{equation*}
+
+We compute recursively in this manner until the following $\mathbf{A}^{i+1}$ matrix
+becomes identity matrix.
+
+\begin{equation*}
+    A^{i+1} = \begin{bmatrix}
+        I & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \mathbf{B} - \frac{1}{a_{i, i}}\mathbf{b}\mathbf{b}^*
+    \end{bmatrix}
+\end{equation*}
+
+This operation in total operates in about $O(n^3)$, roughly about $n^3/3$ FLOPs.
+
+\subsubsection{QR Decomposition}
+
+\paragraph{Introduction} Decomposition of a matrix $A$ into a product $A = QR$ of 
+orthogonal matrix $Q$ and upper triangular matrix $R$.
+
+\paragraph{Square Matrix} For real square matrices, $A = QR$, if $A$ is invertible, then factorization is
+unique if we require the diagonal elements of R to be positive. For n linearly independent columns
+in $A$, first n columns of Q form an orthonormal basis for the column space of A. 
+
+\paragraph{Rectangular Matrix} More generally, we factor a complex $m \times n, (m \geq n)$ matrix A.
+Product would be $m \times m Q$ and $m \times n$ uppper triangular matrix R. 
+
+\begin{equation*}
+    A = QR = Q\begin{bmatrix} R_1 \\ 0 \end{bmatrix}
+\end{equation*}
+
+\paragraph{Computation} Gram-Schmidt method, Householder reflection. 
+\textcolor{red}{numerical instability and add others, explain how to use householder reflection}
+
+\paragraph{Application} Least squares problem
+
+\begin{equation*}
+    \begin{split}
+        A^*Ax & = A^*b\\
+        R^*Rx = (QR)^*QRx = R^*Q^*b & \Leftrightarrow Rx = Q^*b
+    \end{split}
+\end{equation*}
+
+There are a couple of advantages to this method
+\begin{enumerate}[itemsep=0pt]
+    \item Numerical stability ($A^TA$ is worse than $A$, since the ratio of eigen vector is bigger)
+    \item Faster
+\end{enumerate}
+
+\subsubsection{Eigendecomposition of a Matrix} \label{sec:eigen-decomp}
+
+\paragraph{Introduction} Factorization of a matrix into a canonical form, whereby matrix
+is represented in terms of its eigenvalues and eigenvectors. Only diagonalizable\footnote{
+    there exists an invertible matrix $P$ and a diagonal matrix $D$ such that $P^{-1}AP=D$
+}
+matrices can be factorized in this way.
+
+\paragraph{Statement} Let $A$ be square matrix $n \times n$ with $n$ linearly independent
+eigenvectors $q_i$, then $A$ can be factorized as 
+
+\begin{equation*}
+    A = Q\Lambda Q^{-1}
+\end{equation*}
+
+where $Q$ is the square matrix $n \times n$ whoce $i$th column is the $i$th eigenvector of 
+$A$ and $\Lambda$ is the diagonal matrix whose diagonal elements are the corresponding
+eigenvalues. The decomposition can be derived from the fundamental property of eigenvectors:
+
+\begin{equation*}
+    Av = \lambda v \Rightarrow AQ = Q\Lambda \Rightarrow A = Q\Lambda Q^{-1}
+\end{equation*}
+
+\paragraph{Other characteristics.}

@@ -1,0 +1,43 @@
+\subsubsection{Hermitian Matrix}
+\paragraph{Introduction} Otherwise known as a self-adjoint matrix,
+a Hermitian matrix is a \emph{complex square} matrix that is equal
+to its own \emph{conjugate transpose}. In otherwords
+
+\begin{equation*}
+    A \text{ Hermitian } \Leftrightarrow A = \overline{{A^T}}
+\end{equation*}
+
+Concisely written as $A = A^H$
+
+\paragraph{Properties}
+
+Entries on the main diagonal of any hermitian matrix are real
+
+\textcolor{red}{forgot why I included this definition, need investigation}
+
+\textcolor{blue}{Perhaps the definition of a more general ``Symmetric matrix''}
+
+\subsubsection{Definiteness}
+
+\paragraph{Introduction} Symmetri $n \times n$ real matrix is said to be
+positive-definite if scalar $z^TMz$ is strictly positive for every non-zero
+column vector $z \in \mathcal{R}^n$. Semi-definite is defined similarly,
+except above scalar must be non-negative. 
+
+\paragraph{Properties} Squre root and Cholesky decomposition might be 
+two relevant properties here.
+
+A matrix is positive semidefinite iff. there is a positive semidefinite
+matrix $B$ satisfying $M = BB$. $B$ is unique, and is called the 
+non-negative square root of $M$, denoted with $B = M^{\frac{1}{2}}$.
+
+$B$ is hermitian, so $B* = B$, complex conjugate of itself. 
+
+\textcolor{blue}{Some use square root and $\sqrt{M}$ for any such dcomposition,
+or specifically for the Cholesky decomposition, or any decomposition, other
+only use for the non-negative square root.}
+
+Related to Cholesky decomposition as $M = LL*$, where $L$ is lower
+triangular with non-negative diagonal. See more for section
+\ref{sec:cho-decomp} on Cholesky decomposition.
+

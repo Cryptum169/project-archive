@@ -1,0 +1,77 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[letterpaper]{geometry}% ,margin=1in
+\usepackage{hyperref}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{enumitem}
+% \usepackage{cite}
+\usepackage{biblatex}
+\graphicspath{figs/}
+\usetikzlibrary{shapes.misc}
+\linespread{1.1}
+
+\DeclareUnicodeCharacter{2212}{-}
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\usepackage{geometry}
+\linespread{1}
+\geometry{letterpaper, portrait, margin=0.8in}
+
+%table setup
+\usepackage{booktabs}
+
+% Graphics 
+\usepackage{graphicx}
+\graphicspath{ {figures/} }
+\setlength{\belowcaptionskip}{-17pt}
+
+%Title page config
+\usepackage{titling}
+\setlength{\droptitle}{5cm}
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}
+}
+
+\usepackage{listings}
+
+% Hide Subsubsection
+\setcounter{tocdepth}{3}
+
+% Title
+\title{Research Notes}
+\author{Ruoyang Xu}
+% \subtitle{Math Fundamentals for Robotics, Fall 2020}
+\date{Last Edited: \today}
+\addbibresource{citation.bib}
+% \setcounter{secnumdepth}{0}
+
+% Document Setup
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\tableofcontents
+\pagebreak
+\setcounter{page}{1}
+
+\section{Notations}
+
+\textcolor{red}{Red texts}: follow up notes. \\
+\textcolor{blue}{Blue texts}: commentary notes. 
+
+\input{todo.tex}
+
+\input{math_terms.tex}
+
+\printbibliography
+
+\end{document}
