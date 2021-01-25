@@ -176,4 +176,64 @@ eigenvalues. The decomposition can be derived from the fundamental property of e
     Av = \lambda v \Rightarrow AQ = Q\Lambda \Rightarrow A = Q\Lambda Q^{-1}
 \end{equation*}
 
-\paragraph{Other characteristics.}
+\paragraph{Other characteristics} Eigendecomposition can be used for example as matrix
+inversion.
+
+\begin{equation*}
+    \mathbf{A}^{-1} = \mathbf{Q}\mathbf{\Lambda}^{-1}\mathbf{Q}^{-1}
+\end{equation*}
+
+If the original matrix is symmetric, then since Q is formed from the eigenvectors, it is
+guaranteed to be an orthogonal matrix, therefore $Q^{-1} = Q^T$.
+
+
+\subsubsection{Gram–Schmidt Process}
+\paragraph{Introduction} The GS process is a method for orthonormalizing a set of vectors in an inner product space.
+The process takes a finite, linearly independent set $S = \{v_1, \dotsb v_k\}$
+and generates an orthogonal set $S{'} = \{u_1, \dotsb, u_k\}, k \leq n$ that
+spans the same k-dimensional subspace of $\mathcal{R}^n$ as S.
+
+Application of the GS process to the column vectors of a full column rank matrix 
+yields the QR decomposition. 
+
+\paragraph{Computation} Na\"{i}vely, we compute the the set via
+$\text{proj}_u(v) = \frac{\langle u, v \rangle}{\langle u, u \rangle}u$
+\begin{equation*}
+    \begin{split}
+        u_1 & = v_1\\
+        u_2 & = v_2 - \text{proj}_{u_1}(v_2)\\
+        u_3 & = v_3 - \text{proj}_{u_1}(v_3) - \text{proj}_{u_2}(v_3)\\
+        \vdots\\
+        u_k & = v_k - \sum_{j=1}^{k-1} \text{proj}_{u_j}{v_k}
+    \end{split}
+\end{equation*}
+
+\paragraph{Numerical Stability} When implemented on a computer, the vectors are
+often not quite orthogonal, due to rounding errors. For the classical GS 
+process, the loss of orthogonality is particularly bad, therefore it is said
+that the classical GFS process is numerically unstable. 
+
+This process \emph{can} be stablized by a small modification, sometimes referred
+to as modified GS (MGS). Gives the same result as the original formula and introduces
+smaller errors in finite precision arithmetic. 
+
+We do this by iteratively project onto the previous computed vector
+\begin{equation*}
+    \begin{split}
+        u_k^{(1)} = v_k - \text{proj}_{u_1}(v_k)\\
+        u_k^{(2)} = u_k^{(1)} - \text{proj}_{u_1}(u_k^{(1)})\\
+        \vdots\\
+        u_k^{(k-1)} = u_k^{(k-2)} - \text{proj}_{u_{k-1}}(u_k^{k-2})\\
+        u_k = \frac{u_k^{(k-1)}}{||u_k^{(k-1)}||}
+    \end{split}
+\end{equation*}
+
+\paragraph{Alternatives} Other orthogonalization algorithms includes
+householder transformation or Givens rotations, or the use of Cholesky decomposition. 
+
+Householder are more stable than the MGS, but Householder produces all vector only at the
+end, making GS process applicable for other methods.
+
+\subsubsection{Householder Reflection}
+\paragraph{Introduction} A linear transformation that describes a reflection about a 
+plane or hyperplane containing the origin. 
